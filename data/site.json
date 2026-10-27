@@ -168,7 +168,7 @@
       "kicker": "Research",
       "h1": "Papers",
       "lead": "Papers on language technology for Iranian languages, from benchmarks and corpora to models and evaluation. Filter, then export what you need.",
-      "search_placeholder": "Search titles and abstracts…",
+      "search_placeholder": "Search titles, abstracts, authors, venues…",
       "all_areas": "All tasks",
       "all_languages": "All languages",
       "all_years": "All years",
@@ -183,7 +183,8 @@
       "per_year_title": "Papers per year",
       "per_lang_title": "Papers per language",
       "empty": "No papers match these filters.",
-      "tasks_label": "Tasks"
+      "tasks_label": "Tasks",
+      "all_venues": "All venues"
     },
     "datasets": {
       "path": "datasets/",

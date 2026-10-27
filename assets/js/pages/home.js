@@ -112,7 +112,7 @@
     const latest = [...papers].sort((a, b) => b.year - a.year).slice(0, 6);
     el('latest', 'innerHTML', latest.map(p => {
       const pUrl = p.url || (p.links && (p.links.paper || p.links.doi)) || '';
-      return `<li class="card paper"><h3><a href="${href(pUrl)}"${ext(pUrl)}>${esc(p.title)}</a></h3><div class="meta">${esc(p.venue)}${p.authors ? ' · ' + esc(p.authors.length > 60 ? p.authors.slice(0, 57) + '…' : p.authors) : ''}</div></li>`;
+      return `<li class="card paper"><h3><a href="${href(pUrl)}"${ext(pUrl)}>${esc(p.title)}</a></h3><div class="meta">${SI.paperMeta(p)}${p.authors ? ' · ' + esc(p.authors.length > 60 ? p.authors.slice(0, 57) + '…' : p.authors) : ''}</div></li>`;
     }).join(''));
 
   } catch (e) { SI.showError($('#hero-text'), e); }

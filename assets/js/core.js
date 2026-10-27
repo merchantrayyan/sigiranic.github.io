@@ -86,6 +86,11 @@ const SI = (() => {
 
   // Long author lists: first six names, then "et al."
   const shortAuthors = a => { const n = String(a).split(', '); return n.length > 6 ? n.slice(0, 6).join(', ') + ' et al.' : a; };
+  // "2025 · EMNLP": year, then the merged venue label (full venue name on hover)
+  function paperMeta(p) {
+    const v = p.venue_short || p.venue;
+    return `<span class="p-year">${esc(p.year || '')}</span>${v ? ` · <span class="p-venue"${p.venue && p.venue !== v ? ` title="${esc(p.venue)}"` : ''}>${esc(v)}</span>` : ''}`;
+  }
   function paperItem(p, site, { focus = false } = {}) {
     const T = site.taxonomy;
     const langs = (p.langs || []).map(k => T.paper_languages[k] ? `<a class="tag tag--lang" href="/research/?lang=${encodeURIComponent(k)}">${esc(T.paper_languages[k])}</a>` : '').join(' ');
@@ -93,7 +98,7 @@ const SI = (() => {
     const links = linkButtons({ paper: p.url, ...(p.links || {}) }, site);
     return `<li class="card paper${focus ? ' focus' : ''}" id="p-${tok(p.id)}">
       <h3><a href="${href(p.url)}"${ext(p.url)}>${esc(p.title)}</a></h3>
-      <div class="meta">${esc(p.venue || '')}${p.authors ? ' · ' + esc(shortAuthors(p.authors)) : ''}</div>
+      <div class="meta">${paperMeta(p)}${p.authors ? ' · ' + esc(shortAuthors(p.authors)) : ''}</div>
       <div class="row">${langs} ${areas}</div>
       <div class="row">${p.abstract ? `<button class="btn btn--sm" type="button" aria-expanded="false" aria-controls="abs-${tok(p.id)}" data-abs>${esc(site.labels.abstract)}</button>` : ''}${links}<button class="btn btn--sm" type="button" data-bib="${tok(p.id)}">${esc(site.labels.copy_bib)}</button></div>
       ${p.abstract ? `<p class="abstract" id="abs-${tok(p.id)}" hidden>${esc(p.abstract)}${p.abstract.length > 250 || /[.!?)"\u201d]\s*$/.test(p.abstract) ? '' : `… <a href="${href(p.url)}"${ext(p.url)}>${esc(site.labels.read_more)} ↗</a>`}</p>` : ''}
@@ -195,5 +200,5 @@ const SI = (() => {
   const site = ready.then(chrome);
 
   return { esc, href, ext, tok, color, fill, data, getJSON, $, $$, fmt, debounce, showError, params, setParams, download, csv, copy, useFont,
-    keyCodes, keysForCode, branch, status, badge, langUrl, realPapers, speakersNum, paperItem, linkButtons, bibtex, bindBib, tabs, tabList, tabPanel, bars, currentTheme, site };
+    keyCodes, keysForCode, branch, status, badge, langUrl, realPapers, speakersNum, paperItem, paperMeta, linkButtons, bibtex, bindBib, tabs, tabList, tabPanel, bars, currentTheme, site };
 })();

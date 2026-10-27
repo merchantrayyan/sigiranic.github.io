@@ -23,6 +23,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Fills in missing venues and the merged venue labels (EMNLP, ACL Findings, …) for newly added papers.
+      - name: Normalise paper venues
+        run: python3 tools/venues.py
       # Builds every page from templates/ and data/, and fails on broken links or unfilled placeholders.
       - name: Build site
         run: python3 tools/build.py --out _site

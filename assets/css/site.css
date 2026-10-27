@@ -364,3 +364,11 @@ td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: now
 .contrib-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
 .contrib-foot code { overflow-wrap: anywhere; }
 .contrib-icon { display: inline-block; width: 1.4em; color: var(--muted, inherit); font-weight: 500; }
+
+/* Paper year + venue */
+.paper .meta .p-year { color: var(--ink); font-weight: 500; font-variant-numeric: tabular-nums; }
+.paper .meta .p-venue { color: var(--carnelian); font-weight: 500; }
+.paper .meta .p-venue[title] { cursor: help; text-decoration: underline dotted; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+#venue { width: 100%; max-width: 16rem; text-overflow: ellipsis; }
+#filters label:has(#venue) { min-width: 0; max-width: 100%; }
+@media (max-width: 640px) { #venue { max-width: 100%; } }
