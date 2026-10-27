@@ -101,32 +101,6 @@
     }
     el('map-legend', 'innerHTML', Object.values(T.branches).map(v => `<span><i style="background:${SI.color(v.color)}"></i>${esc(v.label)}</span>`).join(''));
 
-    /* ---- FAMILY TREE SECTION ---- */
-    const F = T.family;
-    el('family-title', 'textContent', P.family_title);
-    el('family-text', 'textContent', P.family_text);
-    const inBranch = b => languages.filter(l => l.branch === b).sort((a, c) => a.name.localeCompare(c.name));
-    const leaf = l => `<li><a href="${langUrl(l.code)}" title="${esc(SI.status(site, l.status).label)}"><i style="background:${SI.color(SI.status(site, l.status).color)}"></i>${esc(l.name)}</a></li>`;
-    const branchNode = b => { const ls = inBranch(b), info = SI.branch(site, b);
-      return `<li><details><summary><span class="dot" style="width:10px;height:10px;border-radius:50%;background:${SI.color(info.color)}"></span><b>${esc(info.label)}</b><span class="n">${ls.length}</span></summary><ul class="leaves">${ls.map(leaf).join('')}</ul></details></li>`; };
-    const groupNode = g => { const n = g.branches.reduce((s, b) => s + inBranch(b).length, 0);
-      return `<li><details><summary><b>${esc(g.label)}</b><span class="n">${n}</span></summary><ul>${g.branches.map(branchNode).join('')}</ul></details></li>`; };
-    el('family-tree', 'innerHTML', `<ul class="tree"><li class="root"><details open><summary><b>${esc(F.name)}</b><span class="n">${languages.length}</span></summary><ul>${F.groups.map(groupNode).join('')}</ul></details></li></ul>`);
-
-    /* ---- SCRIPTS TIMELINE SECTION ---- */
-    const SP = site.pages.scripts;
-    el('scripts-title', 'textContent', P.scripts_title);
-    el('scripts-text', 'textContent', P.scripts_text);
-    const now = new Date().getFullYear(), from = -600, to = now;
-    const x = y => ((y - from) / (to - from)) * 100;
-    const dated = scripts.filter(s => s.start != null).sort((a, b) => a.start - b.start);
-    const yearLabel = y => y < 0 ? `${-y} ${SP.bce}` : y === 0 ? `1 ${SP.ce}` : `${y}`;
-    el('home-timeline', 'innerHTML', dated.map(s => {
-      const end = s.end ?? now;
-      return `<div class="tl-row"><span title="${esc(s.name)}"><a href="/family/#${tok(s.id)}" style="color:inherit;text-decoration:none">${esc(s.name)}</a></span>
-        <div class="tl-track" role="img" aria-label="${esc(`${s.name}: ${yearLabel(s.start)} – ${s.end == null ? SP.present : yearLabel(s.end)}`)}"><i class="${s.end == null ? 'open' : ''}" style="left:${x(s.start)}%;width:${Math.max(.8, x(end) - x(s.start))}%;--c:${SI.color(s.color)}"></i></div></div>`;
-    }).join('') + `<div class="tl-axis" aria-hidden="true">${[-500, 0, 500, 1000, 1500, 2000].map(y => `<span style="left:${x(y)}%">${yearLabel(y)}</span>`).join('')}</div>`);
-
     /* coverage: papers per language key */
     el('coverage-title', 'textContent', P.coverage_title);
     el('coverage-text', 'textContent', P.coverage_text);
@@ -144,12 +118,6 @@
       const pUrl = p.url || (p.links && (p.links.paper || p.links.doi)) || '';
       return `<li class="card paper"><h3><a href="${href(pUrl)}"${ext(pUrl)}>${esc(p.title)}</a></h3><div class="meta">${esc(p.venue)}${p.authors ? ' · ' + esc(p.authors.length > 60 ? p.authors.slice(0, 57) + '…' : p.authors) : ''}</div></li>`;
     }).join(''));
-
-    /* ---- COMMUNITY SECTION ---- */
-    const CP = site.pages.community;
-    el('community-title', 'textContent', P.community_title);
-    el('community-text', 'textContent', P.community_text);
-    el('community-links', 'innerHTML', CP.links.map(c => `<a class="card" href="${href(c.url)}"${ext(c.url)}><div style="font-size:1.5rem" aria-hidden="true">${esc(c.icon)}</div><h3>${esc(c.title)}</h3><p class="muted" style="margin:0">${esc(c.text)}</p></a>`).join(''));
 
   } catch (e) { SI.showError($('#hero-text'), e); }
 

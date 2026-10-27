@@ -80,13 +80,13 @@
         {
           "href": "research/",
           "title": "Papers",
-          "text": "577 papers by task, language and year — with BibTeX and CSV export.",
+          "text": "Every paper by task, language and year — with BibTeX and CSV export.",
           "glyph": "§"
         },
         {
           "href": "family/",
           "title": "Family & Scripts",
-          "text": "The family tree and twelve writing systems across 2,500 years.",
+          "text": "The family tree and the writing systems of Iranian languages across 2,500 years.",
           "glyph": "🌳"
         },
         {
@@ -112,13 +112,7 @@
       "h1": "Special Interest Group on Iranian Languages",
       "map_title": "Language map",
       "map_text": "101 Iranian languages plotted by their primary area of use.",
-      "map_explore": "Explore all languages →",
-      "family_title": "Family tree",
-      "family_text": "The Iranian branch of the Indo-European family, from Old Persian and Avestan to today's 101 languages.",
-      "scripts_title": "Writing systems",
-      "scripts_text": "Twelve scripts across 2,500 years of Iranian-language writing.",
-      "community_title": "Community",
-      "community_text": "SIG Iranic is an open research group. Contribute data, report an issue, or get in touch."
+      "map_explore": "Explore all languages →"
     },
     "languages": {
       "path": "languages/",
