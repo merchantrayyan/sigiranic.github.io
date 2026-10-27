@@ -106,7 +106,7 @@
     el('coverage-text', 'textContent', P.coverage_text);
     const perKey = {};
     papers.forEach(p => (p.langs || []).forEach(k => { if (T.lang_keys[k]) perKey[k] = (perKey[k] || 0) + 1; }));
-    const rows = Object.entries(perKey).sort((a, b) => b[1] - a[1]).slice(0, 12).map(([k, n]) => ({ key: k, label: T.paper_languages[k] || k, value: n }));
+    const rows = Object.entries(perKey).sort((a, b) => b[1] - a[1]).map(([k, n]) => ({ key: k, label: T.paper_languages[k] || k, value: n }));
     const covered = new Set(Object.keys(perKey).map(k => T.lang_primary[k]).filter(Boolean));
     el('coverage', 'innerHTML', SI.bars(rows, { color: 'var(--carnelian)' }) +
       `<p class="muted small" style="margin-top:14px">${esc(SI.fill(P.coverage_count, { n: fmt(languages.filter(l => covered.has(l.code)).length), total: fmt(languages.length) }))}</p>`);
