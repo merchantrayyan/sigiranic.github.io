@@ -357,3 +357,10 @@ td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: now
 
 .error { padding: 16px; border-radius: 12px; background: color-mix(in srgb, var(--carnelian) 12%, transparent); color: var(--ink); }
 .loading { color: var(--ink-faint); padding: 20px 0; }
+
+/* Contribute page */
+.contrib-card { display: flex; flex-direction: column; }
+.contrib-card p { flex: 1; }
+.contrib-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.contrib-foot code { overflow-wrap: anywhere; }
+.contrib-icon { display: inline-block; width: 1.4em; color: var(--muted, inherit); font-weight: 500; }

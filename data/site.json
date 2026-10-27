@@ -41,6 +41,11 @@
       "id": "toolkit",
       "label": "Toolkit",
       "href": "toolkit/"
+    },
+    {
+      "id": "community",
+      "label": "Contribute",
+      "href": "community/"
     }
   ],
   "pages": {
@@ -278,11 +283,11 @@
     },
     "community": {
       "path": "community/",
-      "title": "Community · SIG Iranic",
-      "description": "Join SIG Iranic: code and data on GitHub and Hugging Face, how to contribute papers and datasets, and how to reach the team.",
-      "kicker": "Join us",
-      "h1": "Community",
-      "lead": "We welcome researchers, engineers and speakers of Iranian languages. Everything on this site is open data you can improve.",
+      "title": "Contribute · SIG Iranic",
+      "description": "How to contribute to SIG Iranic: edit the open data on GitHub, open an issue, or send a pull request.",
+      "kicker": "Get involved",
+      "h1": "Contribute",
+      "lead": "Everything on this site is open data in a public GitHub repository. Fix a detail in the browser, report a problem, or send a pull request.",
       "links": [
         {
           "icon": "⌥",
@@ -303,27 +308,67 @@
           "url": "mailto:amir@cis.lmu.de"
         }
       ],
-      "contribute_title": "Contribute",
+      "contribute_title": "Edit the data",
       "contribute": [
         {
           "title": "Add a paper",
-          "text": "Append an entry to data/papers.json and open a pull request.",
+          "text": "Append an entry to the paper list.",
           "file": "data/papers.json"
         },
         {
-          "title": "Add a dataset or tool",
-          "text": "Add it under its language in data/resources.json.",
+          "title": "Add a dataset or resource",
+          "text": "Add it under its language.",
           "file": "data/resources.json"
         },
         {
+          "title": "Add a text tool",
+          "text": "Keyboards, converters, transliterators and other tools.",
+          "file": "data/text-tools.json"
+        },
+        {
           "title": "Fix a language",
-          "text": "Speakers, regions and scripts live in data/languages.json.",
+          "text": "Speakers, regions, status and scripts.",
           "file": "data/languages.json"
+        },
+        {
+          "title": "Fix a writing system",
+          "text": "Periods, descriptions and examples of scripts.",
+          "file": "data/writing-systems.json"
+        },
+        {
+          "title": "Change site text",
+          "text": "Titles, labels and descriptions on every page.",
+          "file": "data/site.json"
         }
       ],
       "cite_title": "About the data",
       "cite_text": "Language codes follow ISO 639-3 and Glottolog. Papers and datasets are collected by the community; years were checked against arXiv and ACL Anthology identifiers. Corrections are always welcome.",
-      "links_title": "Find us"
+      "links_title": "Find us",
+      "contribute_text": "Each page is built from a JSON file. Click Edit on GitHub, make your change, and GitHub opens a pull request for you.",
+      "actions_title": "Other ways to help",
+      "actions": [
+        {
+          "icon": "!",
+          "title": "Open an issue",
+          "text": "Report a mistake, a broken link, or suggest a paper or dataset without editing anything.",
+          "label": "New issue",
+          "url": "https://github.com/sigiranic/sigiranic.github.io/issues/new"
+        },
+        {
+          "icon": "⑂",
+          "title": "Send a pull request",
+          "text": "Fork the repository, change the data or code, and open a pull request.",
+          "label": "Fork on GitHub",
+          "url": "https://github.com/sigiranic/sigiranic.github.io/fork"
+        },
+        {
+          "icon": "☰",
+          "title": "Browse open issues",
+          "text": "See what others reported and pick something to work on.",
+          "label": "View issues",
+          "url": "https://github.com/sigiranic/sigiranic.github.io/issues"
+        }
+      ]
     },
     "notfound": {
       "path": "404.html",
@@ -737,12 +782,12 @@
     "data_note": "Language codes: ISO 639-3 (SIL) and Glottolog (CC BY 4.0).",
     "legal_links": [
       {
-        "label": "Privacy Policy",
-        "href": "privacy/"
+        "label": "Privacy",
+        "href": "https://commonglot.github.io/pages/privacy.html"
       },
       {
-        "label": "Terms of Use",
-        "href": "terms/"
+        "label": "Terms",
+        "href": "https://commonglot.github.io/pages/terms.html"
       }
     ]
   },

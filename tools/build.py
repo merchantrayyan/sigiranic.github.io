@@ -28,6 +28,7 @@ PAGES = {
     "research": ("research.html", "research/index.html", False),
     "datasets": ("datasets.html", "datasets/index.html", False),
     "toolkit": ("toolkit.html", "toolkit/index.html", False),
+    "community": ("community.html", "community/index.html", False),
     "privacy": ("legal.html", "privacy/index.html", False),
     "terms": ("legal.html", "terms/index.html", False),
     "notfound": ("404.html", "404.html", False),
@@ -36,7 +37,6 @@ SCRIPT = {"notfound": None, "privacy": "legal", "terms": "legal"}
 # Removed pages that redirect to new locations
 REDIRECTS = {
     "scripts/index.html": "/family/#scripts",
-    "community/index.html": "/#community",
 }
 
 
