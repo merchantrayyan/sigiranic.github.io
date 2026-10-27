@@ -4,9 +4,27 @@
     <div class="hero-art" id="hero-art"></div>
   </div></section>
   <section class="section--tight"><div class="container"><h2 class="visually-hidden">{{page.numbers_title}}</h2><div class="stats" id="stats"></div></div></section>
-  <section class="section"><div class="container"><div class="section-head"><h2 id="explore-title"></h2></div><div class="grid grid-3 explore" id="explore"></div></div></section>
+  <section class="section"><div class="container"><div class="section-head"><h2 id="explore-title"></h2></div><div class="grid grid-4 explore" id="explore"></div></div></section>
+  <section class="section" id="map-section"><div class="container">
+    <div class="section-head"><h2 id="map-title"></h2><p class="muted" id="map-text"></p></div>
+    <div class="home-map-wrap"><div class="map home-map" id="home-map" role="region" aria-label="{{page.map_title}}"></div></div>
+    <div class="legend" id="map-legend"></div>
+    <p style="margin-top:14px;text-align:center"><a class="btn" href="/languages/" id="map-explore-link"></a></p>
+  </div></section>
+  <section class="section" style="background:var(--bg-2)" id="family-section"><div class="container">
+    <div class="section-head"><h2 id="family-title"></h2><p class="muted" id="family-text"></p></div>
+    <div id="family-tree"></div>
+  </div></section>
+  <section class="section" id="scripts-section"><div class="container">
+    <div class="section-head"><h2 id="scripts-title"></h2><p class="muted" id="scripts-text"></p></div>
+    <div class="timeline" id="home-timeline"></div>
+  </div></section>
   <section class="section" style="background:var(--bg-2)"><div class="container grid grid-2" style="align-items:start">
     <div><h2 id="coverage-title"></h2><p class="muted" id="coverage-text"></p><div id="coverage"></div></div>
     <div><h2 id="latest-title"></h2><ul class="paper-list" id="latest"></ul></div>
+  </div></section>
+  <section class="section" id="community-section"><div class="container">
+    <div class="section-head"><h2 id="community-title"></h2><p class="muted" id="community-text"></p></div>
+    <div class="grid grid-3" id="community-links"></div>
   </div></section>
 </main>

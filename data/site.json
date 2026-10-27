@@ -23,39 +23,24 @@
   },
   "nav": [
     {
-      "id": "languages",
-      "label": "Languages",
-      "href": "languages/"
-    },
-    {
-      "id": "family",
-      "label": "Family tree",
-      "href": "family/"
-    },
-    {
-      "id": "scripts",
-      "label": "Scripts",
-      "href": "scripts/"
-    },
-    {
       "id": "research",
-      "label": "Research",
+      "label": "Papers",
       "href": "research/"
     },
     {
+      "id": "family",
+      "label": "Family & Scripts",
+      "href": "family/"
+    },
+    {
       "id": "datasets",
-      "label": "Datasets & tools",
+      "label": "Resources",
       "href": "datasets/"
     },
     {
       "id": "toolkit",
       "label": "Toolkit",
       "href": "toolkit/"
-    },
-    {
-      "id": "community",
-      "label": "Community",
-      "href": "community/"
     }
   ],
   "pages": {
@@ -88,32 +73,20 @@
       "explore_title": "Explore",
       "explore": [
         {
-          "href": "languages/",
-          "title": "Languages",
-          "text": "Map, filters and a page for every language with its papers, data and links.",
-          "glyph": "ز"
-        },
-        {
-          "href": "family/",
-          "title": "Family tree",
-          "text": "How the branches fit together, from Old Persian and Avestan to today.",
-          "glyph": "🌳"
-        },
-        {
-          "href": "scripts/",
-          "title": "Scripts",
-          "text": "Twelve writing systems across 2,500 years, with samples and Unicode blocks.",
-          "glyph": "𐎠"
-        },
-        {
           "href": "research/",
-          "title": "Research",
-          "text": "Papers by task, language and year, with BibTeX and CSV export.",
+          "title": "Papers",
+          "text": "577 papers by task, language and year — with BibTeX and CSV export.",
           "glyph": "§"
         },
         {
+          "href": "family/",
+          "title": "Family & Scripts",
+          "text": "The family tree and twelve writing systems across 2,500 years.",
+          "glyph": "🌳"
+        },
+        {
           "href": "datasets/",
-          "title": "Datasets & tools",
+          "title": "Resources",
           "text": "Parallel corpora, NLP toolkits and code-mixing resources by language.",
           "glyph": "▤"
         },
@@ -131,7 +104,16 @@
       "coverage_count": "{n} of {total} languages are named in at least one paper.",
       "search_all": "All {n} in {group}",
       "search_none": "Nothing found for “{q}”.",
-      "h1": "Special Interest Group on Iranian Languages"
+      "h1": "Special Interest Group on Iranian Languages",
+      "map_title": "Language map",
+      "map_text": "101 Iranian languages plotted by their primary area of use.",
+      "map_explore": "Explore all languages →",
+      "family_title": "Family tree",
+      "family_text": "The Iranian branch of the Indo-European family, from Old Persian and Avestan to today's 101 languages.",
+      "scripts_title": "Writing systems",
+      "scripts_text": "Twelve scripts across 2,500 years of Iranian-language writing.",
+      "community_title": "Community",
+      "community_text": "SIG Iranic is an open research group. Contribute data, report an issue, or get in touch."
     },
     "languages": {
       "path": "languages/",
@@ -176,15 +158,16 @@
     },
     "family": {
       "path": "family/",
-      "title": "Iranian language family tree",
-      "description": "Interactive tree of the Iranian language family: Western and Eastern branches, historical languages and the 101 living and extinct languages.",
+      "title": "Iranian language family tree & writing systems",
+      "description": "Interactive family tree of the 101 Iranian languages, plus twelve writing systems spanning 2,500 years from Old Persian cuneiform to the modern Persian script.",
       "kicker": "Genealogy",
-      "h1": "Family tree",
-      "lead": "The Iranian languages descend from Proto-Iranian and split into Western and Eastern groups. Click a branch to fold it, or a language to open its page.",
+      "h1": "Family & Scripts",
+      "lead": "The Iranian languages descend from Proto-Iranian and split into Western and Eastern groups. Below the tree you will find a timeline and cards for each of the twelve writing systems used by Iranian languages.",
       "expand": "Expand all",
       "collapse": "Collapse all",
       "filter_placeholder": "Highlight a language…",
-      "note": "Grouping follows the branch labels in our data; subgroupings inside branches are still debated."
+      "note": "Grouping follows the branch labels in our data; subgroupings inside branches are still debated.",
+      "scripts_all_title": "All writing systems"
     },
     "scripts": {
       "path": "scripts/",

@@ -110,8 +110,9 @@ const SI = (() => {
   }
 
   function bibtex(p) {
+    if (p.bibtex) return p.bibtex;
     const clean = s => String(s || '').replace(/[{}\\]/g, '');
-    const fields = [['title', `{${clean(p.title)}}`], p.authors ? ['author', clean(p.authors).split(', ').join(' and ')] : null, ['year', p.year], ['howpublished', `\\url{${clean(p.url)}}`], p.venue ? ['note', clean(p.venue)] : null].filter(Boolean);
+    const fields = [['title', `{${clean(p.title)}}`], p.authors ? ['author', clean(p.authors).split(', ').join(' and ')] : null, ['year', p.year], p.url ? ['howpublished', `\\url{${clean(p.url)}}`] : null, p.venue ? ['note', clean(p.venue)] : null].filter(Boolean);
     return `@misc{${tok(p.id)},\n${fields.map(([k, v]) => `  ${k} = {${v}}`).join(',\n')}\n}`;
   }
   function bindBib(root, papers) {

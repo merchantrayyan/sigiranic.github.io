@@ -22,19 +22,22 @@ CSP = ("default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' 
 
 # page id -> (template, output path, needs map)
 PAGES = {
-    "home": ("home.html", "index.html", False),
+    "home": ("home.html", "index.html", True),
     "languages": ("languages.html", "languages/index.html", True),
     "family": ("family.html", "family/index.html", False),
-    "scripts": ("scripts.html", "scripts/index.html", False),
     "research": ("research.html", "research/index.html", False),
     "datasets": ("datasets.html", "datasets/index.html", False),
     "toolkit": ("toolkit.html", "toolkit/index.html", False),
-    "community": ("community.html", "community/index.html", False),
     "privacy": ("legal.html", "privacy/index.html", False),
     "terms": ("legal.html", "terms/index.html", False),
     "notfound": ("404.html", "404.html", False),
 }
 SCRIPT = {"notfound": None, "privacy": "legal", "terms": "legal"}
+# Removed pages that redirect to new locations
+REDIRECTS = {
+    "scripts/index.html": "/family/#scripts",
+    "community/index.html": "/#community",
+}
 
 
 def lookup(ctx, key):
@@ -128,6 +131,11 @@ def build(out: Path):
                                      script=SCRIPT.get(pid, pid), needs_map=needs_map, jsonld=ld))
         if pid != "notfound":
             written.append(path)
+
+    # Write redirect pages for removed pages
+    for rpath, target in REDIRECTS.items():
+        (out / rpath).parent.mkdir(parents=True, exist_ok=True)
+        (out / rpath).write_text(f'<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0;url={target}"><link rel="canonical" href="{target}"><title>Redirecting…</title><p>Redirecting to <a href="{target}">{target}</a>…</p>')
 
     L = site["pages"]["language"]
     tpl = (ROOT / "templates/language.html").read_text()

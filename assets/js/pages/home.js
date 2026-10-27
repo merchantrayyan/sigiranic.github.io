@@ -23,21 +23,20 @@
     // One index across languages, scripts, papers and resources, shown in that order.
     const G = [
       { id: 'languages', label: site.labels.languages, all: q => `/languages/?q=${encodeURIComponent(q)}` },
-      { id: 'scripts', label: site.pages.scripts.h1, all: () => '/scripts/' },
+      { id: 'scripts', label: site.pages.scripts.h1, all: () => '/family/#scripts' },
       { id: 'papers', label: site.pages.research.h1, all: q => `/research/?q=${encodeURIComponent(q)}` },
       { id: 'datasets', label: site.pages.datasets.h1, all: q => `/datasets/?q=${encodeURIComponent(q)}` },
     ];
     const langLabels = p => (p.langs || []).map(k => T.paper_languages[k] || k).join(' ');
     const index = [
       ...languages.map(l => ({ g: 'languages', label: l.name, sub: l.code, url: langUrl(l.code), text: `${l.name} ${l.code} ${l.area} ${l.glottolog}` })),
-      ...scripts.filter(s => s.id !== 'unwritten').map(s => ({ g: 'scripts', label: s.name, sub: s.direction, url: `/scripts/#${tok(s.id)}`, text: `${s.name} ${s.nativeName} ${s.languages.join(' ')}` })),
+      ...scripts.filter(s => s.id !== 'unwritten').map(s => ({ g: 'scripts', label: s.name, sub: s.direction, url: `/family/#${tok(s.id)}`, text: `${s.name} ${s.nativeName} ${s.languages.join(' ')}` })),
       ...papers.map(p => ({ g: 'papers', label: p.title, sub: String(p.year), url: `/research/?id=${encodeURIComponent(p.id)}`, text: `${p.title} ${p.venue} ${(p.areas || []).map(a => T.areas[a] || a).join(' ')} ${langLabels(p)}` })),
       ...allRes.map(([kind, r]) => { const ls = [...(Array.isArray(r.languages) ? r.languages.map(x => x.lang) : []), ...(r.also || []), ...(r.keys || [])].map(k => T.paper_languages[k] || k);
         return { g: 'datasets', label: r.name, sub: ls.slice(0, 2).join(', ') + (ls.length > 2 ? ' …' : ''), url: `/datasets/?q=${encodeURIComponent(r.name)}${kind === 'datasets' ? '' : '&tab=' + kind}`, text: `${r.name} ${ls.join(' ')} ${r.tasks || ''} ${r.description || ''}` }; }),
     ].map(x => ({ ...x, hay: x.text.toLowerCase(), low: x.label.toLowerCase() }));
     const q = $('#q'), box = $('#results');
     let active = -1;
-    // Exact label, then label prefix, then a word in the label, then anywhere.
     const score = (x, phrase, terms) => x.low === phrase || x.sub.toLowerCase() === phrase ? 0 : x.low.startsWith(phrase) ? 1 : terms.every(t => x.low.split(/[\s:(),-]+/).some(w => w.startsWith(t))) ? 2 : 3;
     const mark = (text, terms) => {
       const re = new RegExp(`(${terms.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'gi');
@@ -72,7 +71,7 @@
     });
     document.addEventListener('click', e => { if (!e.target.closest('.search')) { box.hidden = true; q.setAttribute('aria-expanded', 'false'); } });
 
-    /* the logo, as on the printed mark */
+    /* the logo */
     const B = site.brand;
     $('#hero-art').innerHTML = `<img class="logo-img" src="${href(B.logo)}" alt="${esc(B.logo_alt)}" width="200" height="200"><b>${esc(B.name.split(' ')[0])}</b><span>${esc(B.name.split(' ').slice(1).join(' '))}</span>
       <dl>${B.codes.map(c => `<dt>${esc(c.label)}</dt><dd>${esc(c.value)}</dd>`).join('')}</dl>`;
@@ -84,6 +83,45 @@
     /* explore */
     $('#explore-title').textContent = P.explore_title;
     $('#explore').innerHTML = P.explore.map(c => `<a class="card" href="${href(c.href)}"><span class="glyph" aria-hidden="true">${esc(c.glyph)}</span><h3>${esc(c.title)}</h3><p>${esc(c.text)}</p></a>`).join('');
+
+    /* ---- MAP SECTION ---- */
+    $('#map-title').textContent = P.map_title;
+    $('#map-text').textContent = P.map_text;
+    $('#map-explore-link').textContent = P.map_explore;
+    const map = await SIMap.make($('#home-map'), { scroll: false, zoom: 3 });
+    const mapLayer = L.layerGroup().addTo(map);
+    const colorOf = l => SI.branch(site, l.branch).color;
+    languages.forEach(l => {
+      if (!Array.isArray(l.coordinates)) return;
+      SIMap.dot(l, colorOf(l)).bindPopup(() => SIMap.popup(l, site)).addTo(mapLayer);
+    });
+    $('#map-legend').innerHTML = Object.values(T.branches).map(v => `<span><i style="background:${SI.color(v.color)}"></i>${esc(v.label)}</span>`).join('');
+
+    /* ---- FAMILY TREE SECTION ---- */
+    const F = T.family;
+    $('#family-title').textContent = P.family_title;
+    $('#family-text').textContent = P.family_text;
+    const inBranch = b => languages.filter(l => l.branch === b).sort((a, c) => a.name.localeCompare(c.name));
+    const leaf = l => `<li><a href="${langUrl(l.code)}" title="${esc(SI.status(site, l.status).label)}"><i style="background:${SI.color(SI.status(site, l.status).color)}"></i>${esc(l.name)}</a></li>`;
+    const branchNode = b => { const ls = inBranch(b), info = SI.branch(site, b);
+      return `<li><details><summary><span class="dot" style="width:10px;height:10px;border-radius:50%;background:${SI.color(info.color)}"></span><b>${esc(info.label)}</b><span class="n">${ls.length}</span></summary><ul class="leaves">${ls.map(leaf).join('')}</ul></details></li>`; };
+    const groupNode = g => { const n = g.branches.reduce((s, b) => s + inBranch(b).length, 0);
+      return `<li><details><summary><b>${esc(g.label)}</b><span class="n">${n}</span></summary><ul>${g.branches.map(branchNode).join('')}</ul></details></li>`; };
+    $('#family-tree').innerHTML = `<ul class="tree"><li class="root"><details open><summary><b>${esc(F.name)}</b><span class="n">${languages.length}</span></summary><ul>${F.groups.map(groupNode).join('')}</ul></details></li></ul>`;
+
+    /* ---- SCRIPTS TIMELINE SECTION ---- */
+    const SP = site.pages.scripts;
+    $('#scripts-title').textContent = P.scripts_title;
+    $('#scripts-text').textContent = P.scripts_text;
+    const now = new Date().getFullYear(), from = -600, to = now;
+    const x = y => ((y - from) / (to - from)) * 100;
+    const dated = scripts.filter(s => s.start != null).sort((a, b) => a.start - b.start);
+    const yearLabel = y => y < 0 ? `${-y} ${SP.bce}` : y === 0 ? `1 ${SP.ce}` : `${y}`;
+    $('#home-timeline').innerHTML = dated.map(s => {
+      const end = s.end ?? now;
+      return `<div class="tl-row"><span title="${esc(s.name)}"><a href="/family/#${tok(s.id)}" style="color:inherit;text-decoration:none">${esc(s.name)}</a></span>
+        <div class="tl-track" role="img" aria-label="${esc(`${s.name}: ${yearLabel(s.start)} – ${s.end == null ? SP.present : yearLabel(s.end)}`)}"><i class="${s.end == null ? 'open' : ''}" style="left:${x(s.start)}%;width:${Math.max(.8, x(end) - x(s.start))}%;--c:${SI.color(s.color)}"></i></div></div>`;
+    }).join('') + `<div class="tl-axis" aria-hidden="true">${[-500, 0, 500, 1000, 1500, 2000].map(y => `<span style="left:${x(y)}%">${yearLabel(y)}</span>`).join('')}</div>`;
 
     /* coverage: papers per language key */
     $('#coverage-title').textContent = P.coverage_title;
@@ -97,8 +135,18 @@
 
     /* latest papers */
     $('#latest-title').textContent = P.latest_title;
-    const latest = [...papers].sort((a, b) => b.year - a.year).slice(0, 4);
-    $('#latest').innerHTML = latest.map(p => `<li class="card paper"><h3><a href="${href(p.url)}"${ext(p.url)}>${esc(p.title)}</a></h3><div class="meta">${esc(p.venue)}</div></li>`).join('');
+    const latest = [...papers].sort((a, b) => b.year - a.year).slice(0, 6);
+    $('#latest').innerHTML = latest.map(p => {
+      const pUrl = p.url || (p.links && (p.links.paper || p.links.doi)) || '';
+      return `<li class="card paper"><h3><a href="${href(pUrl)}"${ext(pUrl)}>${esc(p.title)}</a></h3><div class="meta">${esc(p.venue)}${p.authors ? ' · ' + esc(p.authors.length > 60 ? p.authors.slice(0, 57) + '…' : p.authors) : ''}</div></li>`;
+    }).join('');
+
+    /* ---- COMMUNITY SECTION ---- */
+    const CP = site.pages.community;
+    $('#community-title').textContent = P.community_title;
+    $('#community-text').textContent = P.community_text;
+    $('#community-links').innerHTML = CP.links.map(c => `<a class="card" href="${href(c.url)}"${ext(c.url)}><div style="font-size:1.5rem" aria-hidden="true">${esc(c.icon)}</div><h3>${esc(c.title)}</h3><p class="muted" style="margin:0">${esc(c.text)}</p></a>`).join('');
+
   } catch (e) { SI.showError($('#hero-text'), e); }
 
 })();
