@@ -75,33 +75,6 @@
           "label": "writing systems"
         }
       ],
-      "explore_title": "Explore",
-      "explore": [
-        {
-          "href": "research/",
-          "title": "Papers",
-          "text": "Every paper by task, language and year — with BibTeX and CSV export.",
-          "glyph": "§"
-        },
-        {
-          "href": "family/",
-          "title": "Family & Scripts",
-          "text": "The family tree and the writing systems of Iranian languages across 2,500 years.",
-          "glyph": "🌳"
-        },
-        {
-          "href": "datasets/",
-          "title": "Resources",
-          "text": "Parallel corpora, NLP toolkits and code-mixing resources by language.",
-          "glyph": "▤"
-        },
-        {
-          "href": "toolkit/",
-          "title": "Toolkit",
-          "text": "Normalise Persian and Kurdish text, inspect characters, transliterate.",
-          "glyph": "⌘"
-        }
-      ],
       "latest_title": "Recent papers",
       "coverage_title": "Where the resources are",
       "coverage_text": "Papers per language in this index. Most of the family has almost nothing.",

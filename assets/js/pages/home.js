@@ -81,10 +81,6 @@
     const values = { languages: languages.length, papers: papers.length, datasets: nResources, scripts: scripts.filter(s => s.id !== 'unwritten').length };
     $('#stats').innerHTML = P.stats.map(s => `<div class="stat"><b>${fmt(values[s.key])}</b><span>${esc(s.label)}</span></div>`).join('');
 
-    /* explore */
-    $('#explore-title').textContent = P.explore_title;
-    $('#explore').innerHTML = P.explore.map(c => `<a class="card" href="${href(c.href)}"><span class="glyph" aria-hidden="true">${esc(c.glyph)}</span><h3>${esc(c.title)}</h3><p>${esc(c.text)}</p></a>`).join('');
-
     /* ---- MAP SECTION ---- */
     el('map-title', 'textContent', P.map_title);
     el('map-text', 'textContent', P.map_text);
