@@ -1,5 +1,6 @@
 (async () => {
   const { esc, href, ext, tok, $, fmt, data, langUrl } = SI;
+  const el = (id, prop, val) => { const e = $(`#${id}`); if (e) { e[prop] = val; } return e; };
   try {
     const site = await SI.site;
     const P = site.pages.home, T = site.taxonomy;
@@ -85,67 +86,70 @@
     $('#explore').innerHTML = P.explore.map(c => `<a class="card" href="${href(c.href)}"><span class="glyph" aria-hidden="true">${esc(c.glyph)}</span><h3>${esc(c.title)}</h3><p>${esc(c.text)}</p></a>`).join('');
 
     /* ---- MAP SECTION ---- */
-    $('#map-title').textContent = P.map_title;
-    $('#map-text').textContent = P.map_text;
-    $('#map-explore-link').textContent = P.map_explore;
-    const map = await SIMap.make($('#home-map'), { scroll: false, zoom: 3 });
-    const mapLayer = L.layerGroup().addTo(map);
-    const colorOf = l => SI.branch(site, l.branch).color;
-    languages.forEach(l => {
-      if (!Array.isArray(l.coordinates)) return;
-      SIMap.dot(l, colorOf(l)).bindPopup(() => SIMap.popup(l, site)).addTo(mapLayer);
-    });
-    $('#map-legend').innerHTML = Object.values(T.branches).map(v => `<span><i style="background:${SI.color(v.color)}"></i>${esc(v.label)}</span>`).join('');
+    el('map-title', 'textContent', P.map_title);
+    el('map-text', 'textContent', P.map_text);
+    el('map-explore-link', 'textContent', P.map_explore);
+    const mapEl = $('#home-map');
+    if (mapEl) {
+      const map = await SIMap.make(mapEl, { scroll: false, zoom: 3 });
+      const mapLayer = L.layerGroup().addTo(map);
+      const colorOf = l => SI.branch(site, l.branch).color;
+      languages.forEach(l => {
+        if (!Array.isArray(l.coordinates)) return;
+        SIMap.dot(l, colorOf(l)).bindPopup(() => SIMap.popup(l, site)).addTo(mapLayer);
+      });
+    }
+    el('map-legend', 'innerHTML', Object.values(T.branches).map(v => `<span><i style="background:${SI.color(v.color)}"></i>${esc(v.label)}</span>`).join(''));
 
     /* ---- FAMILY TREE SECTION ---- */
     const F = T.family;
-    $('#family-title').textContent = P.family_title;
-    $('#family-text').textContent = P.family_text;
+    el('family-title', 'textContent', P.family_title);
+    el('family-text', 'textContent', P.family_text);
     const inBranch = b => languages.filter(l => l.branch === b).sort((a, c) => a.name.localeCompare(c.name));
     const leaf = l => `<li><a href="${langUrl(l.code)}" title="${esc(SI.status(site, l.status).label)}"><i style="background:${SI.color(SI.status(site, l.status).color)}"></i>${esc(l.name)}</a></li>`;
     const branchNode = b => { const ls = inBranch(b), info = SI.branch(site, b);
       return `<li><details><summary><span class="dot" style="width:10px;height:10px;border-radius:50%;background:${SI.color(info.color)}"></span><b>${esc(info.label)}</b><span class="n">${ls.length}</span></summary><ul class="leaves">${ls.map(leaf).join('')}</ul></details></li>`; };
     const groupNode = g => { const n = g.branches.reduce((s, b) => s + inBranch(b).length, 0);
       return `<li><details><summary><b>${esc(g.label)}</b><span class="n">${n}</span></summary><ul>${g.branches.map(branchNode).join('')}</ul></details></li>`; };
-    $('#family-tree').innerHTML = `<ul class="tree"><li class="root"><details open><summary><b>${esc(F.name)}</b><span class="n">${languages.length}</span></summary><ul>${F.groups.map(groupNode).join('')}</ul></details></li></ul>`;
+    el('family-tree', 'innerHTML', `<ul class="tree"><li class="root"><details open><summary><b>${esc(F.name)}</b><span class="n">${languages.length}</span></summary><ul>${F.groups.map(groupNode).join('')}</ul></details></li></ul>`);
 
     /* ---- SCRIPTS TIMELINE SECTION ---- */
     const SP = site.pages.scripts;
-    $('#scripts-title').textContent = P.scripts_title;
-    $('#scripts-text').textContent = P.scripts_text;
+    el('scripts-title', 'textContent', P.scripts_title);
+    el('scripts-text', 'textContent', P.scripts_text);
     const now = new Date().getFullYear(), from = -600, to = now;
     const x = y => ((y - from) / (to - from)) * 100;
     const dated = scripts.filter(s => s.start != null).sort((a, b) => a.start - b.start);
     const yearLabel = y => y < 0 ? `${-y} ${SP.bce}` : y === 0 ? `1 ${SP.ce}` : `${y}`;
-    $('#home-timeline').innerHTML = dated.map(s => {
+    el('home-timeline', 'innerHTML', dated.map(s => {
       const end = s.end ?? now;
       return `<div class="tl-row"><span title="${esc(s.name)}"><a href="/family/#${tok(s.id)}" style="color:inherit;text-decoration:none">${esc(s.name)}</a></span>
         <div class="tl-track" role="img" aria-label="${esc(`${s.name}: ${yearLabel(s.start)} – ${s.end == null ? SP.present : yearLabel(s.end)}`)}"><i class="${s.end == null ? 'open' : ''}" style="left:${x(s.start)}%;width:${Math.max(.8, x(end) - x(s.start))}%;--c:${SI.color(s.color)}"></i></div></div>`;
-    }).join('') + `<div class="tl-axis" aria-hidden="true">${[-500, 0, 500, 1000, 1500, 2000].map(y => `<span style="left:${x(y)}%">${yearLabel(y)}</span>`).join('')}</div>`;
+    }).join('') + `<div class="tl-axis" aria-hidden="true">${[-500, 0, 500, 1000, 1500, 2000].map(y => `<span style="left:${x(y)}%">${yearLabel(y)}</span>`).join('')}</div>`);
 
     /* coverage: papers per language key */
-    $('#coverage-title').textContent = P.coverage_title;
-    $('#coverage-text').textContent = P.coverage_text;
+    el('coverage-title', 'textContent', P.coverage_title);
+    el('coverage-text', 'textContent', P.coverage_text);
     const perKey = {};
     papers.forEach(p => (p.langs || []).forEach(k => { if (T.lang_keys[k]) perKey[k] = (perKey[k] || 0) + 1; }));
     const rows = Object.entries(perKey).sort((a, b) => b[1] - a[1]).slice(0, 12).map(([k, n]) => ({ key: k, label: T.paper_languages[k] || k, value: n }));
     const covered = new Set(Object.keys(perKey).map(k => T.lang_primary[k]).filter(Boolean));
-    $('#coverage').innerHTML = SI.bars(rows, { color: 'var(--carnelian)' }) +
-      `<p class="muted small" style="margin-top:14px">${esc(SI.fill(P.coverage_count, { n: fmt(languages.filter(l => covered.has(l.code)).length), total: fmt(languages.length) }))}</p>`;
+    el('coverage', 'innerHTML', SI.bars(rows, { color: 'var(--carnelian)' }) +
+      `<p class="muted small" style="margin-top:14px">${esc(SI.fill(P.coverage_count, { n: fmt(languages.filter(l => covered.has(l.code)).length), total: fmt(languages.length) }))}</p>`);
 
     /* latest papers */
-    $('#latest-title').textContent = P.latest_title;
+    el('latest-title', 'textContent', P.latest_title);
     const latest = [...papers].sort((a, b) => b.year - a.year).slice(0, 6);
-    $('#latest').innerHTML = latest.map(p => {
+    el('latest', 'innerHTML', latest.map(p => {
       const pUrl = p.url || (p.links && (p.links.paper || p.links.doi)) || '';
       return `<li class="card paper"><h3><a href="${href(pUrl)}"${ext(pUrl)}>${esc(p.title)}</a></h3><div class="meta">${esc(p.venue)}${p.authors ? ' · ' + esc(p.authors.length > 60 ? p.authors.slice(0, 57) + '…' : p.authors) : ''}</div></li>`;
-    }).join('');
+    }).join(''));
 
     /* ---- COMMUNITY SECTION ---- */
     const CP = site.pages.community;
-    $('#community-title').textContent = P.community_title;
-    $('#community-text').textContent = P.community_text;
-    $('#community-links').innerHTML = CP.links.map(c => `<a class="card" href="${href(c.url)}"${ext(c.url)}><div style="font-size:1.5rem" aria-hidden="true">${esc(c.icon)}</div><h3>${esc(c.title)}</h3><p class="muted" style="margin:0">${esc(c.text)}</p></a>`).join('');
+    el('community-title', 'textContent', P.community_title);
+    el('community-text', 'textContent', P.community_text);
+    el('community-links', 'innerHTML', CP.links.map(c => `<a class="card" href="${href(c.url)}"${ext(c.url)}><div style="font-size:1.5rem" aria-hidden="true">${esc(c.icon)}</div><h3>${esc(c.title)}</h3><p class="muted" style="margin:0">${esc(c.text)}</p></a>`).join(''));
 
   } catch (e) { SI.showError($('#hero-text'), e); }
 
